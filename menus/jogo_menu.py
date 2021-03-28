@@ -14,22 +14,30 @@ def insert():
     tipo = input("insira a id do tipo de jogo\n")
     j = JogoDAO()
     jogo = j.insert_on_db(idade, nome, tempo, jogadoresmin, jogadoresmax, tipo)
-    input(f"jogo de id: {jogo}")
-    print("aperte qualquer tecla para sair\n")
+    print(f"jogo de id: {jogo}")
+    input("aperte qualquer tecla para sair\n")
+
+
+def select():
+    id = input("insira a id do jogo\n")
+    j = JogoDAO()
+    resp = j.select_from_db(id)
+    print(resp)
+    input("aperte qualquer tecla para sair\n")
 
 
 def delete():
     id = input("insira a id do jogo\n")
     j = JogoDAO()
     resp = j.remove_from_db(id)
-    input(f"{resp}")
-    print("aperte qualquer tecla para sair\n")
+    print(f"{resp}")
+    input("aperte qualquer tecla para sair\n")
 # endregion
 
 
 jogo_menu = ConsoleMenu("JOGOS", "")
 jogo_menu.append_item(FunctionItem("Inserir jogo", insert))
-jogo_menu.append_item(FunctionItem("Ver jogo", print, ""))
+jogo_menu.append_item(FunctionItem("Ver jogo", select))
 jogo_menu.append_item(FunctionItem("Ver todos os jogos", print, ""))
 jogo_menu.append_item(FunctionItem("Editar um jogo", print, ""))
 jogo_menu.append_item(FunctionItem("Deletar um jogo", delete, ""))
