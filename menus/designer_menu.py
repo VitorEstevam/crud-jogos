@@ -29,17 +29,19 @@ def select_all():
 
 
 def update():
+    c = DesignerDAO()
+    print(c.select_all_from_db())
     id = input("insira a id do designer que você deseja modificar\n")
     desc = input("insira a descricao da designer\n")
-    c = DesignerDAO()
     r = c.update_on_db(id, desc)
     input(f"designer de id:{r} atualizado")
     print("aperte qualquer tecla para sair\n")
 
 
 def delete():
-    id = input("insira a id do designer que você deseja deletar\n")
     c = DesignerDAO()
+    print(c.select_all_from_db())
+    id = input("insira a id do designer que você deseja deletar\n")
     r = c.remove_from_db(id)
     input(f"{r}")
     print("aperte qualquer tecla para sair\n")

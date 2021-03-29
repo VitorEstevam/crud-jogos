@@ -29,17 +29,19 @@ def select_all():
 
 
 def update():
+    c = CategoriaDAO()
+    print(c.select_all_from_db())
     id = input("insira a id da categoria que você deseja modificar\n")
     desc = input("insira a descricao da categoria\n")
-    c = CategoriaDAO()
     r = c.update_on_db(id, desc)
     input(f"categoria de id{r} atualizada")
     print("aperte qualquer tecla para sair\n")
 
 
 def delete():
-    id = input("insira a id da categoria que você deseja deletar\n")
     c = CategoriaDAO()
+    print(c.select_all_from_db())
+    id = input("insira a id da categoria que você deseja deletar\n")
     r = c.remove_from_db(id)
     input(f"{r}")
     print("aperte qualquer tecla para sair\n")

@@ -29,17 +29,19 @@ def select_all():
 
 
 def update():
+    c = MecanicaDAO()
+    print(c.select_all_from_db())
     id = input("insira a id da mecanica que você deseja modificar\n")
     desc = input("insira a descricao da mecanica\n")
-    c = MecanicaDAO()
     r = c.update_on_db(id, desc)
     input(f"mecanica de id{r} atualizada")
     print("aperte qualquer tecla para sair\n")
 
 
 def delete():
-    id = input("insira a id da mecanica que você deseja deletar\n")
     c = MecanicaDAO()
+    print(c.select_all_from_db())
+    id = input("insira a id da mecanica que você deseja deletar\n")
     r = c.remove_from_db(id)
     input(f"{r}")
     print("aperte qualquer tecla para sair\n")
