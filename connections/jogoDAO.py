@@ -5,6 +5,26 @@ import json
 
 
 class JogoDAO(DAO):
+    def select_all_from_db(self):
+        response = []
+        elements = []
+        try:
+            _connect = self._initialize_connection()
+            _cursor = _connect.cursor(cursor_factory=RealDictCursor)
+            _cursor.execute(f'SELECT id FROM jogo')
+            _connect.commit()
+            response = _cursor.fetchall()
+
+            # json_items = json.dumps(response)
+            for i in response:
+                elements.append(self.select_from_db(i["id"]))
+
+        except (Exception, psycopg2.Error) as error:
+            return "an error occurred"
+
+        else:
+            return elements
+
     def insert_on_db(self, idade, nome, tempo, jogadoresMin, jogadoresMax, idTipo):  # create
         response = []
         try:
@@ -70,6 +90,32 @@ class JogoDAO(DAO):
         if(response == None):
             return 'deleted'
 
+    def update_on_db(self, id, idade, nome, tempo, jogadoresMin, jogadoresMax, idTipo):  # update
+        response = []
+        try:
+            _connect = self._initialize_connection()
+            _cursor = _connect.cursor()
+            a = f"UPDATE jogo SET idade={idade}, nome='{nome}', tempo={tempo}, jogadoresmin={jogadoresMin}, jogadoresmax={jogadoresMax}, idtipo={idTipo} WHERE id = {id};"
+            _cursor.execute(a)
+            _cursor.execute(
+                f'select id from jogo where id={id}')
+            _connect.commit()
+            response = _cursor.fetchone()
+
+            id = json.dumps(response[0])
+        except (Exception, psycopg2.Error) as error:
+            if(_connect):
+                _cursor.close()
+                _connect.close()
+            return "an error occurred"
+
+        finally:
+            if(_connect):
+                _cursor.close()
+                _connect.close()
+
+        return id
+
     def add_categoria(self, idJogo, idCategoria):
         try:
             _connect = self._initialize_connection()
@@ -125,6 +171,22 @@ class JogoDAO(DAO):
         else:
             return response
 
+    def sel_categoria_with_id(self, id):
+        response = []
+        try:
+            _connect = self._initialize_connection()
+            _cursor = _connect.cursor()
+            _cursor.execute(
+                f'SELECT c.* FROM "jogo-categoria" AS jc, categoria AS c where jc."idJogo" = {id} AND c.id = jc."idCategoria"')
+            _connect.commit()
+
+            response = _cursor.fetchall()
+        except (Exception, psycopg2.Error) as error:
+            return "an error occurred"
+
+        else:
+            return response
+
     def sel_mecanica(self, id):
         response = []
         try:
@@ -132,6 +194,22 @@ class JogoDAO(DAO):
             _cursor = _connect.cursor()
             _cursor.execute(
                 f'SELECT m.descricao FROM  "jogo-mecanica"  AS jm, mecanica AS m where jm."idJogo" = {id} AND m.id = jm."idMecanica"')
+            _connect.commit()
+
+            response = _cursor.fetchall()
+        except (Exception, psycopg2.Error) as error:
+            return "an error occurred"
+
+        else:
+            return response
+
+    def sel_mecanica_with_id(self, id):
+        response = []
+        try:
+            _connect = self._initialize_connection()
+            _cursor = _connect.cursor()
+            _cursor.execute(
+                f'SELECT m.* FROM  "jogo-mecanica"  AS jm, mecanica AS m where jm."idJogo" = {id} AND m.id = jm."idMecanica"')
             _connect.commit()
 
             response = _cursor.fetchall()
@@ -156,6 +234,64 @@ class JogoDAO(DAO):
 
         else:
             return response
+
+    def sel_designer_with_id(self, id):
+        response = []
+        try:
+            _connect = self._initialize_connection()
+            _cursor = _connect.cursor()
+            _cursor.execute(
+                f'SELECT d.* FROM  "jogo-designer"  AS jd, designer AS d where jd."id_jogo" = {id} AND d.id = jd."id_designer"')
+            _connect.commit()
+
+            response = _cursor.fetchall()
+        except (Exception, psycopg2.Error) as error:
+            return "an error occurred"
+
+        else:
+            return response
+
+    def remove_mecanica(self, id_jogo, id_mecanica):
+        response = ''
+        try:
+            _connect = self._initialize_connection()
+            _cursor = _connect.cursor()
+            a = f'DELETE FROM "jogo-mecanica" WHERE "idJogo" = {id_jogo} and "idMecanica" = {id_mecanica}'
+            _cursor.execute(a)
+            _connect.commit()
+        except (Exception, psycopg2.Error) as error:
+            return "an error occurred"
+
+        else:
+            return 'deleted'
+
+    def remove_designer(self, id_jogo, id_designer):
+        response = ''
+        try:
+            _connect = self._initialize_connection()
+            _cursor = _connect.cursor()
+            a = f'DELETE FROM "jogo-designer" WHERE "id_jogo" = {id_jogo} and "id_designer" = {id_designer}'
+            _cursor.execute(a)
+            _connect.commit()
+        except (Exception, psycopg2.Error) as error:
+            return "an error occurred"
+
+        else:
+            return 'deleted'
+
+    def remove_categoria(self, id_jogo, id_categoria):
+        response = ''
+        try:
+            _connect = self._initialize_connection()
+            _cursor = _connect.cursor()
+            a = f'DELETE FROM "jogo-categoria" WHERE "idJogo" = {id_jogo} and "idCategoria" = {id_categoria}'
+            _cursor.execute(a)
+            _connect.commit()
+        except (Exception, psycopg2.Error) as error:
+            return "an error occurred"
+
+        else:
+            return 'deleted'
 
     def sel_all_attributes_from_jogo(self, id):
         a = {}
