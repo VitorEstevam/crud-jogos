@@ -28,7 +28,7 @@ class DesignerDAO(DAO):
                 _cursor.close()
                 _connect.close()
 
-        return json.dumps(response[0])
+        return json.dumps(response[0], indent=2)
 
     def select_from_db(self, id):  # read single
         response = ''
@@ -51,7 +51,7 @@ class DesignerDAO(DAO):
                 _cursor.close()
                 _connect.close()
 
-        return json.dumps(response)
+        return json.dumps(response, indent=2)
 
     def select_all_from_db(self):  # read all
         results = []
@@ -74,7 +74,7 @@ class DesignerDAO(DAO):
                 _cursor.close()
                 _connect.close()
 
-        return json.dumps(response)
+        return json.dumps(response, indent=2)
 
     def update_on_db(self, id, nome):  # update
         response = []
@@ -97,7 +97,7 @@ class DesignerDAO(DAO):
             if(_connect):
                 _cursor.close()
                 _connect.close()
-        return json.dumps(response[0])
+        return json.dumps(response[0], indent=2)
 
     def remove_from_db(self, id):  # delete
         response = ''

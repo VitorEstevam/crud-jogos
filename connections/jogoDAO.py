@@ -7,7 +7,7 @@ import json
 class JogoDAO(DAO):
     def select_all_from_db(self):
         response = []
-        elements = []
+        elements = ""
         try:
             _connect = self._initialize_connection()
             _cursor = _connect.cursor(cursor_factory=RealDictCursor)
@@ -15,9 +15,10 @@ class JogoDAO(DAO):
             _connect.commit()
             response = _cursor.fetchall()
 
-            # json_items = json.dumps(response)
+            # json_items = json.dumps(response, indent=2)
             for i in response:
-                elements.append(self.select_from_db(i["id"]))
+                # elements.append(self.select_from_db(i["id"]))
+                elements += self.select_from_db(i["id"])
 
         except (Exception, psycopg2.Error) as error:
             return "an error occurred"
@@ -37,7 +38,7 @@ class JogoDAO(DAO):
             _connect.commit()
             response = _cursor.fetchone()
 
-            id = json.dumps(response[0])
+            id = json.dumps(response[0], indent=2)
             # for i in categorias:
             #     self.add_categoria(id, i)
             # for i in designers:
@@ -102,7 +103,7 @@ class JogoDAO(DAO):
             _connect.commit()
             response = _cursor.fetchone()
 
-            id = json.dumps(response[0])
+            id = json.dumps(response[0], indent=2)
         except (Exception, psycopg2.Error) as error:
             if(_connect):
                 _cursor.close()
@@ -322,7 +323,7 @@ class JogoDAO(DAO):
                 _cursor.close()
                 _connect.close()
 
-        return json.dumps(response)
+        return json.dumps(response, indent=2)
 
         # def select_all_from_db(self):  # read all
         #     results = []
@@ -345,7 +346,7 @@ class JogoDAO(DAO):
         #             _cursor.close()
         #             _connect.close()
 
-        #     return json.dumps(response)
+        #     return json.dumps(response, indent=2)
 
         # def update_on_db(self, id, desc):  # update
         #     response = []
@@ -368,7 +369,7 @@ class JogoDAO(DAO):
         #         if(_connect):
         #             _cursor.close()
         #             _connect.close()
-        #     return json.dumps(response[0])
+        #     return json.dumps(response[0],indent=2)
 
         # def remove_from_db(self, id):  # delete
         #     response = ''

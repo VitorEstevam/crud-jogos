@@ -5,7 +5,7 @@ import abc
 class DAO():
     data = {
         'host': 'localhost',
-        'database': 'jogosney',
+        'database': 'jogos',
         'user': 'postgres',
         'password': '123456'
     }

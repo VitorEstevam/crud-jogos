@@ -29,7 +29,7 @@ class TipoDAO(DAO):
                 _cursor.close()
                 _connect.close()
 
-        return json.dumps(response[0])
+        return json.dumps(response[0], indent=2)
 
     def select_from_db(self, id):  # read single
         response = ''
@@ -52,7 +52,7 @@ class TipoDAO(DAO):
                 _cursor.close()
                 _connect.close()
 
-        return json.dumps(response)
+        return json.dumps(response, indent=2)
 
     def select_all_from_db(self):  # read all
         results = []
@@ -75,7 +75,7 @@ class TipoDAO(DAO):
                 _cursor.close()
                 _connect.close()
 
-        return json.dumps(response)
+        return json.dumps(response, indent=2)
 
     def update_on_db(self, id, desc):  # update
         response = []
@@ -98,7 +98,7 @@ class TipoDAO(DAO):
             if(_connect):
                 _cursor.close()
                 _connect.close()
-        return json.dumps(response[0])
+        return json.dumps(response[0], indent=2)
 
     def remove_from_db(self, id):  # delete
         response = ''
